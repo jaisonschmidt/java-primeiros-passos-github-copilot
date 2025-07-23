@@ -1,0 +1,100 @@
+{
+  "name": "Java 21 Spring Boot Development",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspace",
+  "shutdownAction": "stopCompose",
+  "forwardPorts": [8080, 27017, 8081],
+  "postCreateCommand": "mvn clean compile",
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        // AI & Copilot
+        "GitHub.copilot",
+        "GitHub.copilot-chat",
+        
+        // Java Development
+        "vscjava.vscode-java-pack",
+        "vscjava.vscode-java-test",
+        
+        // Spring Boot
+        "vmware.vscode-spring-boot",
+        "vscjava.vscode-spring-initializr",
+        "vscjava.vscode-spring-boot-dashboard",
+        
+        // Database & MongoDB
+        "mongodb.mongodb-vscode",
+        
+        // Architecture & Documentation
+        "jebbs.plantuml",
+        "systemticks.c4-dsl-extension",
+        
+        // DevOps & Containers
+        "ms-azuretools.vscode-docker",
+        "ms-vscode-remote.remote-containers",
+        
+        // Testing & Quality
+        "sonarsource.sonarlint-vscode",
+        
+        // Git & Version Control
+        "eamodio.gitlens",
+        "github.vscode-pull-request-github",
+        
+        // Productivity & UI
+        "pkief.material-icon-theme",
+        
+        // REST API Testing
+        "humao.rest-client",
+        "rangav.vscode-thunder-client",
+        
+        // Configuration & Format
+        "redhat.vscode-yaml",
+        "redhat.vscode-xml"
+      ],
+      "settings": {
+        // Java Configuration
+        "java.configuration.detectJdksAtStart": false,
+        "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx2G -Xms100m",
+        "java.compile.nullAnalysis.mode": "automatic",
+        "java.saveActions.organizeImports": true,
+        "java.format.settings.url": "https://raw.githubusercontent.com/google/styleguide/gh-pages/eclipse-java-google-style.xml",
+        
+        // Spring Boot
+        "spring-boot.ls.problem.application-properties.unknown-property": "warning",
+        
+        // MongoDB
+        "mongodb.connectionSaving.hideOptionToChooseWhereToSaveNewConnections": false,
+        
+        // Editor
+        "editor.formatOnSave": true,
+        "editor.codeActionsOnSave": {
+          "source.organizeImports": "explicit",
+          "source.fixAll": "explicit"
+        },
+        
+        // Files
+        "files.associations": {
+          "*.puml": "plantuml",
+          "*.c4puml": "plantuml"
+        },
+        
+        // PlantUML
+        "plantuml.server": "https://www.plantuml.com/plantuml",
+        "plantuml.render": "PlantUMLServer",
+        
+        // Terminal
+        "terminal.integrated.defaultProfile.linux": "bash",
+        
+        // Git
+        "git.autofetch": true,
+        "git.confirmSync": false,
+        
+        // REST Client
+        "rest-client.rememberCookiesForSubsequentRequests": true
+      }
+    }
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-in-docker:2": {}
+  }
+}

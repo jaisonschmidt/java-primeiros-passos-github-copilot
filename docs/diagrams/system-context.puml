@@ -1,0 +1,19 @@
+@startuml system-context
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Context.puml
+
+title System Context Diagram - High School Management System
+
+Person(student, "Student", "Registers for extracurricular activities")
+Person(staff, "School Staff", "Views activity registrations")
+
+System(hms, "High School Management System", "Allows students to view and sign up for extracurricular activities")
+
+System_Ext(browser, "Web Browser", "User interface")
+System_Ext(mongodb, "MongoDB", "Activity and registration data storage")
+
+Rel(student, browser, "Uses")
+Rel(staff, browser, "Uses")
+Rel(browser, hms, "Makes API calls to", "HTTPS/REST")
+Rel(hms, mongodb, "Reads from and writes to", "MongoDB Protocol")
+
+@enduml

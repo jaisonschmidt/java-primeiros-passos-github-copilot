@@ -1,0 +1,94 @@
+@startuml class-diagram
+title Clean Architecture - Class Diagram
+
+package "Domain Layer" {
+    class Activity {
+        -String id
+        -String name
+        -String description
+        -String schedule
+        -int maxParticipants
+        -List<String> participants
+        +addParticipant(String email)
+        +hasAvailableSpots() : boolean
+        +getAvailableSpots() : int
+    }
+    
+    interface ActivityRepository {
+        +findAll() : List<Activity>
+        +findByName(String name) : Optional<Activity>
+        +findById(String id) : Optional<Activity>
+        +save(Activity activity) : Activity
+        +deleteById(String id)
+        +existsByName(String name) : boolean
+    }
+    
+    class GetActivitiesUseCase {
+        -ActivityRepository repository
+        +execute() : List<Activity>
+    }
+    
+    class SignupForActivityUseCase {
+        -ActivityRepository repository
+        +execute(String name, String email) : Activity
+    }
+}
+
+package "Application Layer" {
+    class ActivityService {
+        -GetActivitiesUseCase getActivitiesUseCase
+        -SignupForActivityUseCase signupUseCase
+        +getAllActivities() : List<ActivityDto>
+        +signupForActivity(String name, String email) : SignupResponseDto
+    }
+    
+    class ActivityDto {
+        +String name
+        +String description
+        +String schedule
+        +int maxParticipants
+        +List<String> participants
+        +int availableSpots
+    }
+    
+    class SignupRequestDto {
+        +String email
+    }
+    
+    class SignupResponseDto {
+        +String message
+    }
+}
+
+package "Infrastructure Layer" {
+    class ActivityController {
+        -ActivityService service
+        +getActivities() : ResponseEntity<List<ActivityDto>>
+        +signupForActivity(String name, SignupRequestDto request) : ResponseEntity<SignupResponseDto>
+    }
+    
+    class ActivityRepositoryImpl {
+        -MongoActivityRepository mongoRepo
+        +findAll() : List<Activity>
+        +findByName(String name) : Optional<Activity>
+        +save(Activity activity) : Activity
+    }
+    
+    interface MongoActivityRepository {
+        +findByName(String name) : Optional<Activity>
+        +existsByName(String name) : boolean
+    }
+}
+
+' Relationships
+GetActivitiesUseCase --> ActivityRepository
+SignupForActivityUseCase --> ActivityRepository
+SignupForActivityUseCase --> Activity
+ActivityService --> GetActivitiesUseCase
+ActivityService --> SignupForActivityUseCase
+ActivityController --> ActivityService
+ActivityRepositoryImpl ..|> ActivityRepository
+ActivityRepositoryImpl --> MongoActivityRepository
+MongoActivityRepository --> Activity
+
+@enduml

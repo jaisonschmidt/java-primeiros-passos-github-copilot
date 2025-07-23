@@ -1,0 +1,19 @@
+@startuml container-diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Container.puml
+
+title Container Diagram - High School Management System
+
+Person(student, "Student", "Registers for extracurricular activities")
+
+System_Boundary(hms, "High School Management System") {
+    Container(webapp, "Web Application", "Spring Boot, Java 21", "Serves static content and provides REST API")
+    ContainerDb(database, "Database", "MongoDB", "Stores activity and registration data")
+}
+
+Container_Ext(browser, "Web Browser", "HTML, CSS, JavaScript", "User interface")
+
+Rel(student, browser, "Uses")
+Rel(browser, webapp, "Makes API calls to", "HTTPS/REST")
+Rel(webapp, database, "Reads from and writes to", "MongoDB Protocol")
+
+@enduml

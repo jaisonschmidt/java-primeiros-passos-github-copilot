@@ -1,0 +1,43 @@
+@startuml component-diagram
+!include https://raw.githubusercontent.com/plantuml-stdlib/C4-PlantUML/master/C4_Component.puml
+
+title Component Diagram - Web Application
+
+Container_Boundary(webapp, "Web Application") {
+    
+    ' Infrastructure Layer
+    Component(controller, "Activity Controller", "Spring MVC", "REST API endpoints")
+    Component(staticController, "Static Controller", "Spring MVC", "Serves static content")
+    Component(repoImpl, "Activity Repository Impl", "Spring Data", "MongoDB implementation")
+    Component(mongoRepo, "Mongo Activity Repository", "Spring Data MongoDB", "Data access interface")
+    
+    ' Application Layer
+    Component(service, "Activity Service", "Spring Service", "Orchestrates use cases")
+    Component(dto, "DTOs", "Java Classes", "Data transfer objects")
+    
+    ' Domain Layer
+    Component(usecase1, "Get Activities Use Case", "Java", "Business logic for retrieving activities")
+    Component(usecase2, "Signup Use Case", "Java", "Business logic for registration")
+    Component(entity, "Activity Entity", "Java", "Domain model with business rules")
+    Component(repoInterface, "Activity Repository", "Java Interface", "Data access contract")
+}
+
+ComponentDb(database, "MongoDB", "Document Database", "Stores activities and registrations")
+Component_Ext(browser, "Web Browser", "HTML/CSS/JS", "User interface")
+
+' Relationships
+Rel(browser, controller, "Makes API calls", "HTTPS/REST")
+Rel(browser, staticController, "Requests static files", "HTTP")
+Rel(controller, service, "Uses")
+Rel(service, usecase1, "Executes")
+Rel(service, usecase2, "Executes")
+Rel(usecase1, repoInterface, "Uses")
+Rel(usecase2, repoInterface, "Uses")
+Rel(usecase2, entity, "Creates/Updates")
+Rel(repoImpl, repoInterface, "Implements")
+Rel(repoImpl, mongoRepo, "Uses")
+Rel(mongoRepo, database, "Queries")
+Rel(service, dto, "Creates")
+Rel(controller, dto, "Uses")
+
+@enduml
